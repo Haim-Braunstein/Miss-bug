@@ -36,13 +36,23 @@ app.get('/api/bug/save', (req, res) => {
         })
 })
 
+app.get('/api/bug/:id', (req, res) => {
+    const bugId = req.params.id
+    bugService.getById(bugId)
+        .then(bug => res.send(bug))
+        .catch(err => {
+            // loggerService.error(err)
+            // res.status(400).send('Cannot get bug')
+        })
+})
+
 app.get('/api/bug/:id/remove', (req, res) => {
     const bugId = req.params.id
     bugService.remove(bugId)
         .then(() => res.send(bugId))
         .catch((err) => {
-            // loggerService.error('Cannot remove car', err)
-            // res.status(400).send('Cannot remove car')
+            // loggerService.error('Cannot remove bug', err)
+            // res.status(400).send('Cannot remove bug')
         })
 })
 
