@@ -1,5 +1,3 @@
-
-import { axios } from '../lib/axios.js'
 import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
 
@@ -16,21 +14,29 @@ export const bugService = {
 }
 
 function query() {
-    return fetch(BASE_URL)
-        .then(res => res.json()) 
-        .then(data => {
-            console.log(data)
-            return data
-        })
+
+    return axios.get(BASE_URL)
+        .then(res => res.data)
         .catch(err => console.log('Can\'t load the bugs', err))
+    // return fetch(BASE_URL)
+    //     .then(res => res.json()) 
+    //     .then(data => {
+    //         return data
+    //     })
+    //    
 }
 
 function getById(bugId) {
-    return storageService.get(STORAGE_KEY, bugId)
+    return axios.get(BASE_URL + bugId)
+        .then(res => res.data)
+        .catch(err => console.log('Cant get bug id', err))
 }
 
 function remove(bugId) {
-    return storageService.remove(STORAGE_KEY, bugId)
+    return axios.get(BASE_URL + bugId + '/remove')
+        .then(res => res.data)
+        .catch(err => console.log('Cannot remove bug', err))
+
 }
 
 function save(bug) {
