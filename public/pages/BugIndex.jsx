@@ -12,7 +12,11 @@ export function BugIndex() {
     }, [])
 
     function loadBugs() {
-        bugService.query().then(setBugs)
+        bugService.query().then(bugs => {
+            console.log(bugs)
+            setBugs(bugs)
+        })
+        console.log('asd')
     }
 
     function onRemoveBug(bugId) {
@@ -67,7 +71,7 @@ export function BugIndex() {
                 showErrorMsg('Cannot update bug')
             })
     }
-
+    if (!bugs) return <div>loading...</div>
     return (
         <main>
             <h3>Bugs App</h3>

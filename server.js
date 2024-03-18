@@ -1,14 +1,21 @@
 import express from 'express'
 import { bugService } from './services/bug.service.js'
-
 const app = express()
-app.get('/', (req, res) => res.send('Hello there!!'))
+
+// app.get('/', (req, res) => res.send('Hello there!!'))
+
+// Express Config:
+app.use(express.static('public'))
 app.listen(3033, () => console.log('Server ready at port 3033'))
+
+// app.use(cookieParser())
+
 
 
 // Get bugs (READ)
 
 app.get('/api/bug', (req, res) => {
+    console.log('!!!!!!!!!!');
     bugService.query()
         .then(bugs => {
             res.send(bugs)

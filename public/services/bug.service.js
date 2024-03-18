@@ -1,8 +1,10 @@
 
+import { axios } from '../lib/axios.js'
 import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
 
 const STORAGE_KEY = 'bugDB'
+const BASE_URL = '/api/bug/'
 
 _createBugs()
 
@@ -13,10 +15,16 @@ export const bugService = {
     remove,
 }
 
-
 function query() {
-    return storageService.query(STORAGE_KEY)
+    return fetch(BASE_URL)
+        .then(res => res.json()) 
+        .then(data => {
+            console.log(data)
+            return data
+        })
+        .catch(err => console.log('Can\'t load the bugs', err))
 }
+
 function getById(bugId) {
     return storageService.get(STORAGE_KEY, bugId)
 }
