@@ -1,22 +1,19 @@
 [
     {
         "title": "Infinite Loop Detected",
-        "severity": 4,
+        "severity": 22,
+        "description": "errors when clicking Save",
         "_id": "1NF1N1T3"
     },
     {
         "title": "Keyboard Not Found",
-        "severity": 3,
+        "severity": 33,
         "_id": "K3YB0RD"
     },
     {
-        "title": "404 Coffee Not Found",
-        "severity": 2,
-        "_id": "C0FF33"
-    },
-    {
         "title": "Unexpected Response",
-        "severity": 1,
+        "severity": 3,
+        "description": "errors when clicking Save",
         "_id": "G0053"
     }
 ]

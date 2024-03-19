@@ -15,7 +15,7 @@ export function BugIndex() {
 
 
     useEffect(() => {
-        setSearchParams(filterBy)
+        // setSearchParams(filterBy)
         loadBugs()
     
     }, [])
@@ -70,9 +70,9 @@ export function BugIndex() {
             .save(bugToSave)
             .then((savedBug) => {
                 console.log('Updated Bug:', savedBug)
-                const bugsToUpdate = bugs.map((currBug) =>
-                    currBug._id === savedBug._id ? savedBug : currBug
-                )
+                const bugsToUpdate = bugs.map((currBug) =>{
+                  return  currBug._id === savedBug._id ? savedBug : currBug
+            })
                 setBugs(bugsToUpdate)
                 showSuccessMsg('Bug updated')
             })

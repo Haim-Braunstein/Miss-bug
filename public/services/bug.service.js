@@ -41,13 +41,14 @@ function remove(bugId) {
 }
 
 function save(bug) {
-    console.log(bug);
-    const url = BASE_URL + '/save'
-    let queryParams = `title=${bug.title}&severity=${bug.severity}`
+    
     if (bug._id) {
-        queryParams += `&des=${bug.description}&_id=${bug._id}`
+        return axios.put(BASE_URL, bug)
+            .then(res => res.data)
+    } else {
+        return axios.post(BASE_URL, bug)
+            .then(res => res.data)
     }
-    return axios.get(url + queryParams).then(res => res.data)
 
 }
 
