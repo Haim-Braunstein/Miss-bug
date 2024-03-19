@@ -34,7 +34,7 @@ function getById(bugId) {
 }
 
 function remove(bugId) {
-    return axios.get(BASE_URL + bugId + '/remove')
+    return axios.delete(BASE_URL + bugId)
         .then(res => res.data)
         .catch(err => console.log('Cannot remove bug', err))
 
@@ -54,9 +54,9 @@ function save(bug) {
 function getFilterFromParams(searchParams = {}) {
     // const defaultFilter = getDefaultFilter()
     return {
-        title: searchParams.get('title') ,
-        severity: searchParams.get('severity') ,
-        description: searchParams.get('description') ,
+        title: searchParams.get('title'),
+        severity: searchParams.get('severity'),
+        description: searchParams.get('description'),
     }
 }
 
