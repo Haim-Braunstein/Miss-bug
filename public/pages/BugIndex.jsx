@@ -1,3 +1,6 @@
+const { Link, useSearchParams } = ReactRouterDOM
+
+
 import { bugService } from '../services/bug.service.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { BugList } from '../cmps/BugList.jsx'
@@ -5,10 +8,16 @@ import { BugList } from '../cmps/BugList.jsx'
 const { useState, useEffect } = React
 
 export function BugIndex() {
+    const [searchParams, setSearchParams] = useSearchParams()
+    console.log(useSearchParams());
     const [bugs, setBugs] = useState(null)
+    const [filterBy, setFilterBy] = useState(bugService.getFilterFromParams(searchParams))
+
 
     useEffect(() => {
+        setSearchParams(filterBy)
         loadBugs()
+    
     }, [])
 
     function loadBugs() {
@@ -54,6 +63,7 @@ export function BugIndex() {
     }
 
     function onEditBug(bug) {
+        console.log(bug);
         const severity = +prompt('New severity?')
         const bugToSave = { ...bug, severity }
         bugService

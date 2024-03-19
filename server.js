@@ -1,28 +1,25 @@
 import express from 'express'
-import { bugService } from './services/bug.service.js'
-const app = express()
+import cookieParser from 'cookie-parser'
 
-// app.get('/', (req, res) => res.send('Hello there!!'))
+import { bugService } from './services/bug.service.js'
+
+const app = express()
 
 // Express Config:
 app.use(express.static('public'))
+app.use(cookieParser())
 app.listen(3033, () => console.log('Server ready at port 3033'))
-
-// app.use(cookieParser())
-
-
 
 // Get bugs (READ)
 
 app.get('/api/bug', (req, res) => {
-    console.log('!!!!!!!!!!');
     bugService.query()
         .then(bugs => {
             res.send(bugs)
         })
         .catch(err => {
             // loggerService.error('Cannot get bugs', err)
-            // res.status(400).send('Cannot get bugs')
+            res.status(400).send('Cannot get bugs')
             console.log('Cannot get bugs', err)
         })
 })
@@ -35,7 +32,7 @@ app.get('/api/bug/save', (req, res) => {
         desc: req.query.desc,
         _id: req.query._id
     }
-   bugService.save(bugToSave)
+    bugService.save(bugToSave)
         .then(bug => res.send(bug))
         .catch((err) => {
             // loggerService.error('Cannot save car', err)
@@ -45,11 +42,23 @@ app.get('/api/bug/save', (req, res) => {
 
 app.get('/api/bug/:id', (req, res) => {
     const bugId = req.params.id
+    const { visitedBugs = [] } = req.cookies
+    console.log('visitedBugs', visitedBugs)
+
+    if (!visitedBugs.includes(bugId)) {
+        if (visitedBugs.length >= 3) return res.status(401).send('wait a little bit')
+        else visitedBugs.push(bugId)
+    }
+
+
+    res.cookie('visitedBugs', visitedBugs, { maxAge: 1000 * 50 })
+
+
     bugService.getById(bugId)
         .then(bug => res.send(bug))
         .catch(err => {
             // loggerService.error(err)
-            // res.status(400).send('Cannot get bug')
+            res.status(400).send('Cannot get bug')
         })
 })
 
