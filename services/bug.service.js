@@ -33,8 +33,11 @@ function query(filterBy = { title: '', minSeverity: 0 }, sortBy = { type: '', di
     }
 
     //SORT
-    if (sortBy.type === 'createdAt') {
-        bugsToReturn.sort((b1, b2) => (+sortBy.dir) * (b1.createdAt - b2.createdAt))
+    if (sortBy.type === 'title') {
+        bugsToReturn.sort((b1, b2) => {
+            return (+sortBy.dir) * b1.title.localeCompare(b2.title)
+        })
+
     } else if (sortBy.type === 'severity') {
         bugsToReturn.sort((b1, b2) => (+sortBy.dir) * (b1.severity - b2.severity))
     }
