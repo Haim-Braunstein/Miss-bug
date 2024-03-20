@@ -12,19 +12,15 @@ export const bugService = {
     save,
     remove,
     getFilterFromParams,
+    getDefaultFilter,
 }
 
-function query() {
+function query(filterBy = getDefaultFilter()) {
+    console.log('filterBy before axios', filterBy);
 
-    return axios.get(BASE_URL)
+    return axios.get(BASE_URL, { params: filterBy })
         .then(res => res.data)
         .catch(err => console.log('Can\'t load the bugs', err))
-    // return fetch(BASE_URL)
-    //     .then(res => res.json()) 
-    //     .then(data => {
-    //         return data
-    //     })
-    //    
 }
 
 function getById(bugId) {
@@ -41,7 +37,7 @@ function remove(bugId) {
 }
 
 function save(bug) {
-    
+
     if (bug._id) {
         return axios.put(BASE_URL, bug)
             .then(res => res.data)
@@ -52,14 +48,19 @@ function save(bug) {
 
 }
 
+function getDefaultFilter() {
+    return { title: '', minSeverity: 0, labels: '' }
+}
+
 function getFilterFromParams(searchParams = {}) {
-    // const defaultFilter = getDefaultFilter()
+    const defaultFilter = getDefaultFilter()
     return {
-        title: searchParams.get('title'),
-        severity: searchParams.get('severity'),
-        description: searchParams.get('description'),
+        title: searchParams.get('title') || defaultFilter.title,
+        minSeverity: searchParams.get('minSeverity') || defaultFilter.minSeverity,
+        labels: searchParams.get('labels') || defaultFilter.labels
     }
 }
+
 
 
 

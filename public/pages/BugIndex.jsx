@@ -4,28 +4,41 @@ const { Link, useSearchParams } = ReactRouterDOM
 import { bugService } from '../services/bug.service.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { BugList } from '../cmps/BugList.jsx'
+import { BugFilter } from '../cmps/BugFilter.jsx'
+import { utilService } from '../services/util.service.js'
 
-const { useState, useEffect } = React
+const { useState, useEffect, useRef } = React
 
 export function BugIndex() {
     const [searchParams, setSearchParams] = useSearchParams()
-    console.log(useSearchParams());
     const [bugs, setBugs] = useState(null)
     const [filterBy, setFilterBy] = useState(bugService.getFilterFromParams(searchParams))
+    const debounceOnSetFilter = useRef(utilService.debounce(onSetFilter, 500))
 
+    console.log(filterBy);
 
     useEffect(() => {
-        // setSearchParams(filterBy)
+        setSearchParams(filterBy)
         loadBugs()
+
+
+    }, [filterBy])
+
+    function onSetFilter(fieldsToUpdate) {
+        console.log('fieldsToUpdate',fieldsToUpdate);
+        setFilterBy(prevFilter => {
+
+            console.log(prevFilter);
+            return { ...prevFilter, ...fieldsToUpdate }
+
+        })
+    }
     
-    }, [])
 
     function loadBugs() {
-        bugService.query().then(bugs => {
-            console.log(bugs)
+        bugService.query(filterBy).then(bugs => {
             setBugs(bugs)
         })
-        console.log('asd')
     }
 
     function onRemoveBug(bugId) {
@@ -70,9 +83,9 @@ export function BugIndex() {
             .save(bugToSave)
             .then((savedBug) => {
                 console.log('Updated Bug:', savedBug)
-                const bugsToUpdate = bugs.map((currBug) =>{
-                  return  currBug._id === savedBug._id ? savedBug : currBug
-            })
+                const bugsToUpdate = bugs.map((currBug) => {
+                    return currBug._id === savedBug._id ? savedBug : currBug
+                })
                 setBugs(bugsToUpdate)
                 showSuccessMsg('Bug updated')
             })
@@ -86,6 +99,12 @@ export function BugIndex() {
         <main>
             <h3>Bugs App</h3>
             <main>
+            {/* {console.log(debounceOnSetFilter)} */}
+
+                <BugFilter
+                    onSetFilter={debounceOnSetFilter.current}
+                    filterBy={filterBy}
+                />
                 <button onClick={onAddBug}>Add Bug ⛐</button>
                 <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
             </main>

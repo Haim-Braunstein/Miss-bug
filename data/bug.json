@@ -1,19 +1,25 @@
 [
     {
+        "title": "asd",
+        "description": "sad",
+        "severity": 4,
+        "_id": "XsjoX"
+    },
+    {
+        "title": "fsdg",
+        "description": "dsfdsfsdf",
+        "severity": 5,
+        "_id": "vLUk5"
+    },
+    {
         "title": "Infinite Loop Detected",
         "severity": 22,
         "description": "errors when clicking Save",
-        "_id": "1NF1N1T3"
-    },
-    {
-        "title": "Keyboard Not Found",
-        "severity": 33,
-        "_id": "K3YB0RD"
-    },
-    {
-        "title": "Unexpected Response",
-        "severity": 3,
-        "description": "errors when clicking Save",
-        "_id": "G0053"
+        "_id": "1NF1N1T3",
+        "labels": [
+            "critical",
+            "need-CR",
+            "dev-branch"
+        ]
     }
 ]

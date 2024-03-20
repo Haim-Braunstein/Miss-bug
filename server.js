@@ -15,8 +15,16 @@ app.listen(3033, () => console.log('Server ready at port 3033'))
 // Get bugs (READ)
 
 app.get('/api/bug', (req, res) => {
-    bugService.query()
+    const filterBy = {
+        title: req.query.title || '',
+        minSeverity: +req.query.minSeverity || 0,
+        labels: req.query.labels || [],
+
+    }
+    console.log('filterBy', filterBy);
+    bugService.query(filterBy)
         .then(bugs => {
+            console.log('bugs from server', bugs);
             res.send(bugs)
         })
         .catch(err => {
