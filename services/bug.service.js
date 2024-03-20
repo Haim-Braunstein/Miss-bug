@@ -11,14 +11,14 @@ export const bugService = {
 
 const bugs = utilService.readJsonFile('data/bug.json')
 
-function query(filterBy = { title: '', minSeverity: 0 }) {
+function query(filterBy = { title: '', minSeverity: 0 }, sortBy = { type: '', dir: 1 }) {
     let bugsToReturn = bugs
+    //FILTER
     if (filterBy.title) {
         console.log('filterBy', filterBy);
         console.log('filterBy.title', filterBy.title);
         const regex = new RegExp(filterBy.title, 'i')
         bugsToReturn = bugsToReturn.filter(bug => regex.test(bug.title))
-        console.log('bugsToReturn', bugsToReturn);
         // return Promise.resolve(bugsToReturn)
     }
 
@@ -27,12 +27,17 @@ function query(filterBy = { title: '', minSeverity: 0 }) {
     }
 
     if (filterBy.labels.length !== 0) {
-        console.log('!!!@@@@@@@$#, ', filterBy.labels);
         bugsToReturn = bugsToReturn.some(bug =>
             filterBy.labels.some(label => bug.labels.includes(label))
         )
     }
-    console.log('bugsToReturn', bugsToReturn);
+
+    //SORT
+    if (sortBy.type === 'createdAt') {
+        bugsToReturn.sort((b1, b2) => (+sortBy.dir) * (b1.createdAt - b2.createdAt))
+    } else if (sortBy.type === 'severity') {
+        bugsToReturn.sort((b1, b2) => (+sortBy.dir) * (b1.severity - b2.severity))
+    }
 
     return Promise.resolve(bugsToReturn)
 }

@@ -6,6 +6,7 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { BugList } from '../cmps/BugList.jsx'
 import { BugFilter } from '../cmps/BugFilter.jsx'
 import { utilService } from '../services/util.service.js'
+import { BugSort } from '../cmps/BugSort.jsx'
 
 const { useState, useEffect, useRef } = React
 
@@ -13,30 +14,30 @@ export function BugIndex() {
     const [searchParams, setSearchParams] = useSearchParams()
     const [bugs, setBugs] = useState(null)
     const [filterBy, setFilterBy] = useState(bugService.getFilterFromParams(searchParams))
+    const [sortBy, setSortBy] = useState({ type: '', dir: 1 })
     const debounceOnSetFilter = useRef(utilService.debounce(onSetFilter, 500))
-
-    console.log(filterBy);
 
     useEffect(() => {
         setSearchParams(filterBy)
         loadBugs()
 
 
-    }, [filterBy])
+    }, [filterBy, sortBy])
 
     function onSetFilter(fieldsToUpdate) {
-        console.log('fieldsToUpdate',fieldsToUpdate);
         setFilterBy(prevFilter => {
-
-            console.log(prevFilter);
             return { ...prevFilter, ...fieldsToUpdate }
 
         })
     }
-    
+
+    function onSetSort(sortBy) {
+        console.log("🚀 ~ onSetSort ~ sortBy:", sortBy)
+        setSortBy(prevSort => ({ ...prevSort, ...sortBy }))
+    }
 
     function loadBugs() {
-        bugService.query(filterBy).then(bugs => {
+        bugService.query(filterBy, sortBy).then(bugs => {
             setBugs(bugs)
         })
     }
@@ -99,11 +100,16 @@ export function BugIndex() {
         <main>
             <h3>Bugs App</h3>
             <main>
-            {/* {console.log(debounceOnSetFilter)} */}
+                {/* {console.log(debounceOnSetFilter)} */}
 
                 <BugFilter
                     onSetFilter={debounceOnSetFilter.current}
                     filterBy={filterBy}
+                />
+
+                <BugSort
+                    onSetSort={onSetSort}
+                    sortBy={sortBy}
                 />
                 <button onClick={onAddBug}>Add Bug ⛐</button>
                 <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />

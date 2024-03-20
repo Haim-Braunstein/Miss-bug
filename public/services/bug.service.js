@@ -15,10 +15,10 @@ export const bugService = {
     getDefaultFilter,
 }
 
-function query(filterBy = getDefaultFilter()) {
-    console.log('filterBy before axios', filterBy);
+function query(filterBy = getDefaultFilter(), sortBy) {
+    const queryParams = { ...filterBy, ...sortBy }
 
-    return axios.get(BASE_URL, { params: filterBy })
+    return axios.get(BASE_URL, { params: queryParams })
         .then(res => res.data)
         .catch(err => console.log('Can\'t load the bugs', err))
 }
