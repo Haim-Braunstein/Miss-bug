@@ -1,18 +1,23 @@
 [
     {
-        "title": "Infinite Loop Detected",
-        "severity": 22,
+        "title": "Unexpected Response",
+        "severity": 3,
+        "createdAt": 1669745820360,
         "description": "errors when clicking Save",
-        "_id": "1NF1N1T3",
         "labels": [
             "critical",
-            "need-CR",
-            "dev-branch"
-        ]
+            "need-CR"
+        ],
+        "_id": "G0053",
+        "creator": {
+            "_id": "u101",
+            "fullname": "Puki Ja"
+        }
     },
     {
         "title": "Keyboard Not Found",
         "severity": 33,
+        "createdAt": 1669742220521,
         "description": "errors when clicking Save",
         "_id": "K3YB0RD",
         "labels": [
@@ -22,23 +27,26 @@
         ]
     },
     {
+        "title": "Infinite Loop Detected",
+        "severity": 22,
+        "description": "errors when clicking Save",
+        "createdAt": 1669742220370,
+        "_id": "1NF1N1T3",
+        "labels": [
+            "critical",
+            "need-CR",
+            "dev-branch"
+        ]
+    },
+    {
         "title": "404 Coffee Not Found",
         "description": "errors when clicking Save",
+        "createdAt": 1669745840370,
         "severity": 2,
         "_id": "C0FF33",
         "labels": [
             "need-CR",
             "dev-branch"
         ]
-    },
-    {
-        "title": "Unexpected Response",
-        "severity": 3,
-        "description": "errors when clicking Save",
-        "labels": [
-            "critical",
-            "need-CR"
-        ],
-        "_id": "G0053"
     }
 ]
